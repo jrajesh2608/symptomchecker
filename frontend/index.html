@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom Checker | Know your health</title>
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>HealthCheck AI</span>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT (Step wizard) -->
+        <main class="wizard-container">
+            
+            <!-- STEP 1: Disclaimer (The "Safety First" Onboarding) -->
+            <section id="step-1" class="wizard-step active-step">
+                <div class="card onboarding-card fade-in">
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-shield-cat"></i> <!-- Using an empathetic/calming icon or shield -->
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <h1>Your Health, Your Privacy</h1>
+                    <p class="description">We are here to help you understand your symptoms. Please read our safety pledge before proceeding.</p>
+                    
+                    <div class="disclaimer-box">
+                        <p><strong>Medical Disclaimer:</strong> This symptom checker is an educational tool powered by machine learning. It is <strong>NOT a substitute for professional medical advice, diagnosis, or treatment.</strong> Always seek the advice of your physician.</p>
+                    </div>
+
+                    <div class="toggle-container">
+                        <label class="switch">
+                            <input type="checkbox" id="understand-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="toggle-label">I understand and agree to proceed</span>
+                    </div>
+
+                    <button id="btn-start" class="btn primary-btn disabled-btn" disabled>
+                        Start Symptom Check <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- STEP 2: Symptom Selection -->
+            <section id="step-2" class="wizard-step">
+                <div class="card symptom-card slide-up">
+                    <div class="step-indicator">Step 2 of 3</div>
+                    <h2>How are you feeling today?</h2>
+                    <p class="subtitle">Search and select all the symptoms you are experiencing.</p>
+
+                    <div class="search-wrapper">
+                        <i class="fa-solid fa-search search-icon"></i>
+                        <input type="text" id="symptom-search" placeholder="E.g. Fever, Cough, Nausea..." autocomplete="off">
+                        <div id="autocomplete-list" class="autocomplete-items"></div>
+                    </div>
+
+                    <div class="selected-symptoms-container">
+                        <h3>Your Symptoms:</h3>
+                        <div id="selected-symptoms" class="pills-container">
+                            <!-- Pills go here via JS -->
+                            <p class="empty-state">No symptoms selected yet. Search above.</p>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="btn-analyze" class="btn primary-btn">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Symptoms
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 3: Results Dashboard -->
+            <section id="step-3" class="wizard-step">
+                <div class="card results-card slide-up">
+                    <div class="step-indicator">Step 3 of 3</div>
+                    <h2>Your Insight Report</h2>
+                    <p class="subtitle">Based on your symptoms, here are the most probable conditions.</p>
+                    
+                    <div id="loading-spinner" class="spinner-container" style="display:none;">
+                        <div class="loader"></div>
+                        <p>Analyzing health data...</p>
+                    </div>
+
+                    <div id="results-container">
+                        <!-- Results injected by JS -->
+                    </div>
+
+                    <div class="action-buttons mt-4">
+                        <button id="btn-restart" class="btn outline-btn">
+                            <i class="fa-solid fa-rotate-left"></i> Check New Symptoms
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script at the bottom -->
+    <script src="app.js"></script>
+</body>
+</html>
