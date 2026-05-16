@@ -1,25 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE_URL = "http://localhost:8000";
+    const API_BASE_URL = "https://symptomchecker-1cz2.onrender.com";
 
     // ================================================================
     // AUTH GUARD
     // ================================================================
-    const token   = localStorage.getItem('hc_token');
+    const token = localStorage.getItem('hc_token');
     const userRaw = localStorage.getItem('hc_user');
     if (!token || !userRaw) { window.location.href = 'auth.html'; return; }
 
-    const user    = JSON.parse(userRaw);
+    const user = JSON.parse(userRaw);
     const initial = (user.name || 'U').charAt(0).toUpperCase();
 
     // ================================================================
     // POPULATE USER INFO
     // ================================================================
-    document.getElementById('dash-avatar').textContent   = initial;
+    document.getElementById('dash-avatar').textContent = initial;
     document.getElementById('dash-greeting').textContent = `Hello, ${user.name || 'there'}! 👋`;
-    document.getElementById('dash-email').textContent    = user.email;
+    document.getElementById('dash-email').textContent = user.email;
     document.getElementById('profile-avatar').textContent = initial;
-    document.getElementById('profile-name').textContent   = user.name  || '—';
-    document.getElementById('profile-email').textContent  = user.email || '—';
+    document.getElementById('profile-name').textContent = user.name || '—';
+    document.getElementById('profile-email').textContent = user.email || '—';
 
     // Show layout
     document.getElementById('dashboard-layout').style.display = 'flex';
@@ -40,13 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // PANEL ROUTING — all panels live inside the sidebar layout
     // ================================================================
     const PANELS = {
-        dashboard  : document.getElementById('panel-dashboard'),
+        dashboard: document.getElementById('panel-dashboard'),
         'new-check': document.getElementById('panel-new-check'),
-        results    : document.getElementById('panel-results'),
-        history    : document.getElementById('panel-history'),
-        profile    : document.getElementById('panel-profile'),
-        settings   : document.getElementById('panel-settings'),
-        help       : document.getElementById('panel-help'),
+        results: document.getElementById('panel-results'),
+        history: document.getElementById('panel-history'),
+        profile: document.getElementById('panel-profile'),
+        settings: document.getElementById('panel-settings'),
+        help: document.getElementById('panel-help'),
         placeholder: document.getElementById('panel-placeholder'),
     };
 
@@ -80,9 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 showPanel('history');
                 loadHistoryPanel();
                 break;
-            case 'profile':   showPanel('profile');   break;
-            case 'settings':  showPanel('settings');  break;
-            case 'help':      showPanel('help');       break;
+            case 'profile': showPanel('profile'); break;
+            case 'settings': showPanel('settings'); break;
+            case 'help': showPanel('help'); break;
             case 'saved':
                 document.getElementById('placeholder-title').textContent = 'Saved Reports';
                 showPanel('placeholder'); break;
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // DARK MODE
     // ================================================================
     const darkToggle = document.getElementById('dark-mode-toggle');
-    const themeBtn   = document.getElementById('btn-theme');
+    const themeBtn = document.getElementById('btn-theme');
 
     function applyTheme(dark) {
         document.body.classList.toggle('dark-mode', dark);
@@ -154,12 +154,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderDashboardHistory(history) {
         document.getElementById('stat-checks').textContent = history.length;
-        const statLast  = document.getElementById('stat-last');
-        const histList  = document.getElementById('history-list');
+        const statLast = document.getElementById('stat-last');
+        const histList = document.getElementById('history-list');
 
         if (history.length === 0) {
             statLast.textContent = 'N/A';
-            histList.innerHTML   = '<p class="empty-history">No checks yet — start your first symptom check!</p>';
+            histList.innerHTML = '<p class="empty-history">No checks yet — start your first symptom check!</p>';
             return;
         }
 
@@ -180,8 +180,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.status === 401) { handleLogout(); return; }
-            const data  = await res.json();
-            const hist  = data.history || [];
+            const data = await res.json();
+            const hist = data.history || [];
             histList.innerHTML = '';
             if (!hist.length) {
                 histList.innerHTML = '<p class="empty-history">No checks yet.</p>';
@@ -198,10 +198,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const div = document.createElement('div');
         div.className = 'history-row';
         const symptoms = (item.symptoms || []).map(s => formatName(s)).join(', ') || 'N/A';
-        const timeStr  = item.timestamp
+        const timeStr = item.timestamp
             ? new Date(item.timestamp).toLocaleString('en-US', {
                 month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-              })
+            })
             : '';
         div.innerHTML = `
             <div class="history-row-left">
@@ -216,19 +216,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // ================================================================
     // SYMPTOM CHECK — state & DOM refs
     // ================================================================
-    let symptomsList     = [];
+    let symptomsList = [];
     let selectedSymptoms = [];
-    let activeIndex      = -1;
+    let activeIndex = -1;
 
-    const searchInput      = document.getElementById('symptom-search');
+    const searchInput = document.getElementById('symptom-search');
     const autocompleteList = document.getElementById('autocomplete-list');
-    const pillsContainer   = document.getElementById('selected-symptoms');
-    const btnAnalyze       = document.getElementById('btn-analyze');
-    const countBadge       = document.getElementById('symptom-count');
+    const pillsContainer = document.getElementById('selected-symptoms');
+    const btnAnalyze = document.getElementById('btn-analyze');
+    const countBadge = document.getElementById('symptom-count');
 
     async function fetchSymptoms() {
         try {
-            const res  = await fetch(`${API_BASE_URL}/symptoms`);
+            const res = await fetch(`${API_BASE_URL}/symptoms`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
             symptomsList = Array.isArray(data) ? data : (data.symptoms || []);
@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
         autocompleteList.innerHTML = '';
         if (!query) { autocompleteList.style.display = 'none'; return; }
 
-        const q    = query.toLowerCase().replace(/\s+/g, '_');
+        const q = query.toLowerCase().replace(/\s+/g, '_');
         const qAlt = query.toLowerCase();
 
         const matches = symptomsList
@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const item = document.createElement('div');
             item.className = 'check-autocomplete-item';
             const display = formatName(sym);
-            const regex   = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
             item.innerHTML = display.replace(regex, '<strong>$1</strong>');
             item.addEventListener('mousedown', e => { e.preventDefault(); addSymptom(sym); });
             autocompleteList.appendChild(item);
@@ -284,9 +284,9 @@ document.addEventListener("DOMContentLoaded", () => {
         autocompleteList.style.display = 'none';
     }
 
-    searchInput.addEventListener('input',  () => renderDropdown(searchInput.value.trim()));
-    searchInput.addEventListener('blur',   () => setTimeout(closeDropdown, 150));
-    searchInput.addEventListener('focus',  () => { if (searchInput.value.trim()) renderDropdown(searchInput.value.trim()); });
+    searchInput.addEventListener('input', () => renderDropdown(searchInput.value.trim()));
+    searchInput.addEventListener('blur', () => setTimeout(closeDropdown, 150));
+    searchInput.addEventListener('focus', () => { if (searchInput.value.trim()) renderDropdown(searchInput.value.trim()); });
 
     searchInput.addEventListener('keydown', e => {
         const items = autocompleteList.querySelectorAll('.check-autocomplete-item');
@@ -338,7 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderPills() {
         pillsContainer.innerHTML = '';
-        countBadge.textContent   = selectedSymptoms.length;
+        countBadge.textContent = selectedSymptoms.length;
 
         if (!selectedSymptoms.length) {
             pillsContainer.innerHTML = `
@@ -375,16 +375,16 @@ document.addEventListener("DOMContentLoaded", () => {
             .map(s => `<span class="results-symptom-tag">${formatName(s)}</span>`)
             .join('');
 
-        const spinner   = document.getElementById('loading-spinner');
+        const spinner = document.getElementById('loading-spinner');
         const container = document.getElementById('results-container');
         container.innerHTML = '';
         spinner.style.display = 'block';
 
         try {
             const res = await fetch(`${API_BASE_URL}/predict`, {
-                method : 'POST',
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body   : JSON.stringify({ symptoms: selectedSymptoms })
+                body: JSON.stringify({ symptoms: selectedSymptoms })
             });
             spinner.style.display = 'none';
             if (!res.ok) throw new Error(`HTTP ${res.status}`);

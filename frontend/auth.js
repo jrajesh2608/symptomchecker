@@ -1,19 +1,19 @@
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "https://symptomchecker-1cz2.onrender.com";
 
 // ─── Tab Switching ────────────────────────────────────────────────────────────
 function showTab(tab) {
-    const loginForm    = document.getElementById('form-login');
+    const loginForm = document.getElementById('form-login');
     const registerForm = document.getElementById('form-register');
-    const tabLogin     = document.getElementById('tab-login');
-    const tabRegister  = document.getElementById('tab-register');
+    const tabLogin = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
 
     if (tab === 'login') {
-        loginForm.style.display    = 'block';
+        loginForm.style.display = 'block';
         registerForm.style.display = 'none';
         tabLogin.classList.add('active-tab');
         tabRegister.classList.remove('active-tab');
     } else {
-        loginForm.style.display    = 'none';
+        loginForm.style.display = 'none';
         registerForm.style.display = 'block';
         tabLogin.classList.remove('active-tab');
         tabRegister.classList.add('active-tab');
@@ -27,7 +27,7 @@ function showTab(tab) {
 // ─── Password toggle ──────────────────────────────────────────────────────────
 function togglePassword(inputId, btn) {
     const input = document.getElementById(inputId);
-    const icon  = btn.querySelector('i');
+    const icon = btn.querySelector('i');
     if (input.type === 'password') {
         input.type = 'text';
         icon.classList.replace('fa-eye', 'fa-eye-slash');
@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (regPassword) {
         regPassword.addEventListener('input', () => {
             const val = regPassword.value;
-            const strengthDiv   = document.getElementById('password-strength');
-            const strengthFill  = document.getElementById('strength-fill');
+            const strengthDiv = document.getElementById('password-strength');
+            const strengthFill = document.getElementById('strength-fill');
             const strengthLabel = document.getElementById('strength-label');
 
             if (!val) {
@@ -54,24 +54,24 @@ document.addEventListener('DOMContentLoaded', () => {
             strengthDiv.style.display = 'flex';
 
             let score = 0;
-            if (val.length >= 6)  score++;
+            if (val.length >= 6) score++;
             if (val.length >= 10) score++;
             if (/[A-Z]/.test(val)) score++;
             if (/[0-9]/.test(val)) score++;
             if (/[^A-Za-z0-9]/.test(val)) score++;
 
             const levels = [
-                { pct: '15%',  color: '#E74C3C', label: 'Very Weak' },
-                { pct: '35%',  color: '#E74C3C', label: 'Weak'      },
-                { pct: '55%',  color: '#F39C12', label: 'Fair'      },
-                { pct: '75%',  color: '#2D9CDB', label: 'Good'      },
-                { pct: '100%', color: '#27AE60', label: 'Strong'    },
+                { pct: '15%', color: '#E74C3C', label: 'Very Weak' },
+                { pct: '35%', color: '#E74C3C', label: 'Weak' },
+                { pct: '55%', color: '#F39C12', label: 'Fair' },
+                { pct: '75%', color: '#2D9CDB', label: 'Good' },
+                { pct: '100%', color: '#27AE60', label: 'Strong' },
             ];
             const level = levels[Math.min(score, 4)];
-            strengthFill.style.width      = level.pct;
+            strengthFill.style.width = level.pct;
             strengthFill.style.background = level.color;
-            strengthLabel.textContent     = level.label;
-            strengthLabel.style.color     = level.color;
+            strengthLabel.textContent = level.label;
+            strengthLabel.style.color = level.color;
         });
     }
 
@@ -116,7 +116,7 @@ function setLoading(btnId, loading) {
 // ─── Login ────────────────────────────────────────────────────────────────────
 async function handleLogin() {
     hideAlert('login-error');
-    const email    = document.getElementById('login-email').value.trim();
+    const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
 
     if (!email || !password) {
@@ -151,8 +151,8 @@ async function handleLogin() {
 async function handleRegister() {
     hideAlert('register-error');
     hideAlert('register-success');
-    const name     = document.getElementById('reg-name').value.trim();
-    const email    = document.getElementById('reg-email').value.trim();
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
     const password = document.getElementById('reg-password').value;
 
     if (!name || !email || !password) {
@@ -191,7 +191,7 @@ async function handleRegister() {
 // ─── Allow Enter key to submit forms ─────────────────────────────────────────
 document.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;
-    const loginForm    = document.getElementById('form-login');
+    const loginForm = document.getElementById('form-login');
     const registerForm = document.getElementById('form-register');
     if (loginForm && loginForm.style.display !== 'none') handleLogin();
     else if (registerForm && registerForm.style.display !== 'none') handleRegister();
