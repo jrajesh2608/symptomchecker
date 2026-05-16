@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCheck AI | Sign In</title>
+    <meta name="description" content="Sign in or create an account to use the HealthCheck AI symptom checker.">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>HealthCheck AI</span>
+            </div>
+        </header>
+
+        <!-- AUTH CARD -->
+        <main class="wizard-container">
+            <section id="auth-section" class="wizard-step active-step">
+                <div class="card auth-card fade-in">
+
+                    <!-- TAB SWITCHER -->
+                    <div class="auth-tabs">
+                        <button id="tab-login" class="auth-tab active-tab" onclick="showTab('login')">
+                            <i class="fa-solid fa-right-to-bracket"></i> Sign In
+                        </button>
+                        <button id="tab-register" class="auth-tab" onclick="showTab('register')">
+                            <i class="fa-solid fa-user-plus"></i> Create Account
+                        </button>
+                    </div>
+
+                    <!-- ── LOGIN FORM ── -->
+                    <div id="form-login" class="auth-form">
+                        <div class="icon-wrapper">
+                            <i class="fa-solid fa-shield-heart"></i>
+                        </div>
+                        <h1>Welcome Back</h1>
+                        <p class="description">Sign in to access your health dashboard.</p>
+
+                        <div id="login-error" class="auth-alert auth-alert-danger" style="display:none;"></div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="login-email">
+                                <i class="fa-solid fa-envelope"></i> Email Address
+                            </label>
+                            <input type="email" id="login-email" class="form-input" placeholder="you@example.com" autocomplete="email">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="login-password">
+                                <i class="fa-solid fa-lock"></i> Password
+                            </label>
+                            <div class="input-password-wrapper">
+                                <input type="password" id="login-password" class="form-input" placeholder="Enter your password" autocomplete="current-password">
+                                <button class="toggle-password" type="button" onclick="togglePassword('login-password', this)" title="Show/hide password">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button id="btn-login" class="btn primary-btn" onclick="handleLogin()">
+                            <i class="fa-solid fa-right-to-bracket"></i> Sign In
+                        </button>
+
+                        <p class="auth-switch-text">
+                            Don't have an account?
+                            <a href="#" onclick="showTab('register')">Create one free</a>
+                        </p>
+                    </div>
+
+                    <!-- ── REGISTER FORM ── -->
+                    <div id="form-register" class="auth-form" style="display:none;">
+                        <div class="icon-wrapper">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h1>Create Account</h1>
+                        <p class="description">Join HealthCheck AI and take control of your health.</p>
+
+                        <div id="register-error" class="auth-alert auth-alert-danger" style="display:none;"></div>
+                        <div id="register-success" class="auth-alert auth-alert-success" style="display:none;"></div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-name">
+                                <i class="fa-solid fa-user"></i> Full Name
+                            </label>
+                            <input type="text" id="reg-name" class="form-input" placeholder="Your full name" autocomplete="name">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-email">
+                                <i class="fa-solid fa-envelope"></i> Email Address
+                            </label>
+                            <input type="email" id="reg-email" class="form-input" placeholder="you@example.com" autocomplete="email">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-password">
+                                <i class="fa-solid fa-lock"></i> Password
+                            </label>
+                            <div class="input-password-wrapper">
+                                <input type="password" id="reg-password" class="form-input" placeholder="At least 6 characters" autocomplete="new-password">
+                                <button class="toggle-password" type="button" onclick="togglePassword('reg-password', this)" title="Show/hide password">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="password-strength" id="password-strength" style="display:none;">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strength-fill"></div>
+                            </div>
+                            <span class="strength-label" id="strength-label">Weak</span>
+                        </div>
+
+                        <button id="btn-register" class="btn primary-btn" onclick="handleRegister()">
+                            <i class="fa-solid fa-user-plus"></i> Create Account
+                        </button>
+
+                        <p class="auth-switch-text">
+                            Already have an account?
+                            <a href="#" onclick="showTab('login')">Sign in</a>
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

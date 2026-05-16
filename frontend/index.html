@@ -3,112 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Symptom Checker | Know your health</title>
-    <!-- Google Fonts for typography -->
+    <title>HealthCheck AI | Know your health</title>
+    <meta name="description" content="AI-powered symptom checker — understand your health with HealthCheck AI.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="sidebar.css">
 </head>
 <body>
-    
-    <div class="app-container">
-        <!-- HEADER -->
-        <header class="app-header">
-            <div class="logo">
+
+<!-- ══════════════════════════════════════════════
+     FULL-SCREEN DASHBOARD LAYOUT
+     Sidebar always visible. Panels swap in .dash-main
+     ══════════════════════════════════════════════ -->
+<div id="dashboard-layout" class="dashboard-layout" style="display:none;">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">
                 <i class="fa-solid fa-heart-pulse"></i>
-                <span>HealthCheck AI</span>
             </div>
-        </header>
+            <div class="sidebar-logo-text">
+                <span class="sidebar-logo-title">HealthCheck AI</span>
+                <span class="sidebar-logo-sub">Symptom Checker</span>
+            </div>
+        </div>
 
-        <!-- MAIN LAYOUT (Step wizard) -->
-        <main class="wizard-container">
-            
-            <!-- STEP 1: Disclaimer (The "Safety First" Onboarding) -->
-            <section id="step-1" class="wizard-step active-step">
-                <div class="card onboarding-card fade-in">
-                    <div class="icon-wrapper">
-                        <i class="fa-solid fa-shield-cat"></i> <!-- Using an empathetic/calming icon or shield -->
-                        <i class="fa-solid fa-shield-heart"></i>
-                    </div>
-                    <h1>Your Health, Your Privacy</h1>
-                    <p class="description">We are here to help you understand your symptoms. Please read our safety pledge before proceeding.</p>
-                    
-                    <div class="disclaimer-box">
-                        <p><strong>Medical Disclaimer:</strong> This symptom checker is an educational tool powered by machine learning. It is <strong>NOT a substitute for professional medical advice, diagnosis, or treatment.</strong> Always seek the advice of your physician.</p>
-                    </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" id="nav-dashboard" data-section="dashboard">
+                <i class="fa-solid fa-house"></i><span>Dashboard</span>
+            </a>
 
-                    <div class="toggle-container">
-                        <label class="switch">
-                            <input type="checkbox" id="understand-toggle">
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="toggle-label">I understand and agree to proceed</span>
-                    </div>
+            <div class="nav-section-label">CHECKS</div>
+            <a href="#" class="nav-item" id="nav-new-check" data-section="new-check">
+                <i class="fa-solid fa-stethoscope"></i><span>New Symptom Check</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-history" data-section="history">
+                <i class="fa-solid fa-clock-rotate-left"></i><span>Check History</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-saved" data-section="saved">
+                <i class="fa-regular fa-bookmark"></i><span>Saved Reports</span>
+            </a>
 
-                    <button id="btn-start" class="btn primary-btn disabled-btn" disabled>
-                        Start Symptom Check <i class="fa-solid fa-arrow-right"></i>
+            <div class="nav-section-label">HEALTH</div>
+            <a href="#" class="nav-item" id="nav-insights" data-section="insights">
+                <i class="fa-solid fa-chart-bar"></i><span>Health Insights</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-diseases" data-section="diseases">
+                <i class="fa-solid fa-shield-virus"></i><span>Common Diseases</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-guide" data-section="guide">
+                <i class="fa-regular fa-book-open"></i><span>Symptom Guide</span>
+            </a>
+
+            <div class="nav-section-label">ACCOUNT</div>
+            <a href="#" class="nav-item" id="nav-profile" data-section="profile">
+                <i class="fa-regular fa-user"></i><span>Profile</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-settings" data-section="settings">
+                <i class="fa-solid fa-gear"></i><span>Settings</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-help" data-section="help">
+                <i class="fa-regular fa-circle-question"></i><span>Help &amp; Support</span>
+            </a>
+            <a href="#" class="nav-item nav-logout" id="nav-logout">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-disclaimer">
+            <div class="sidebar-disclaimer-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div>
+                <p class="sidebar-disclaimer-title">Disclaimer</p>
+                <p class="sidebar-disclaimer-text">Educational tool only. Not a substitute for professional medical advice.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ── -->
+    <div class="dash-main">
+
+        <!-- Topbar -->
+        <div class="dash-topbar">
+            <div class="dash-topbar-left">
+                <div class="dash-avatar" id="dash-avatar">?</div>
+                <div class="dash-topbar-info">
+                    <h1 class="dash-greeting" id="dash-greeting">Hello!</h1>
+                    <p class="dash-email" id="dash-email">Loading…</p>
+                </div>
+            </div>
+            <div class="dash-topbar-actions">
+                <button class="topbar-icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+                <button class="topbar-icon-btn" title="Toggle theme" id="btn-theme"><i class="fa-solid fa-sun"></i></button>
+            </div>
+        </div>
+
+        <!-- ══ PANEL: Dashboard Home ══ -->
+        <div class="dash-panel" id="panel-dashboard">
+            <div class="dash-stats">
+                <div class="dash-stat-card">
+                    <i class="fa-solid fa-stethoscope stat-card-icon"></i>
+                    <div class="stat-card-number" id="stat-checks">—</div>
+                    <div class="stat-card-label">Total Checks</div>
+                </div>
+                <div class="dash-stat-card">
+                    <i class="fa-solid fa-calendar-check stat-card-icon"></i>
+                    <div class="stat-card-number stat-card-date" id="stat-last">—</div>
+                    <div class="stat-card-label">Last Check</div>
+                </div>
+            </div>
+
+            <div class="dash-section-title">
+                <i class="fa-solid fa-clock-rotate-left"></i> Recent Checks
+            </div>
+            <div class="dash-history-list" id="history-list">
+                <p class="empty-history">Loading your history…</p>
+            </div>
+
+            <div class="dash-bottom-action">
+                <button id="btn-go-check" class="btn-start-check">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Start New Symptom Check
+                </button>
+            </div>
+        </div>
+
+        <!-- ══ PANEL: New Symptom Check ══ -->
+        <div class="dash-panel" id="panel-new-check" style="display:none;">
+
+            <div class="panel-header">
+                <i class="fa-solid fa-stethoscope"></i>
+                <h2>New Symptom Check</h2>
+            </div>
+
+            <!-- Disclaimer banner -->
+            <div class="check-disclaimer">
+                <i class="fa-solid fa-triangle-exclamation check-disclaimer-icon"></i>
+                <p><strong>Medical Disclaimer:</strong> This tool is for educational purposes only and is <strong>NOT</strong> a substitute for professional medical advice. Always consult a qualified physician.</p>
+            </div>
+
+            <!-- Search area -->
+            <div class="check-section-label">Search &amp; Select Symptoms</div>
+            <div class="check-search-wrapper">
+                <i class="fa-solid fa-magnifying-glass check-search-icon"></i>
+                <input type="text" id="symptom-search" class="check-search-input"
+                       placeholder="Type a symptom — e.g. Fever, Cough, Nausea…"
+                       autocomplete="off">
+                <div id="autocomplete-list" class="check-autocomplete" style="display:none;"></div>
+            </div>
+
+            <!-- Selected pills -->
+            <div class="check-section-label" style="margin-top:1.5rem;">
+                Selected Symptoms
+                <span id="symptom-count" class="symptom-count-badge">0</span>
+            </div>
+            <div id="selected-symptoms" class="check-pills-container">
+                <p class="check-empty-state">
+                    <i class="fa-regular fa-hand-pointer"></i>
+                    Search and click a symptom above to add it here.
+                </p>
+            </div>
+
+            <!-- Analyze button -->
+            <div class="check-actions">
+                <button id="btn-analyze" class="btn-start-check">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Symptoms
+                </button>
+            </div>
+        </div>
+
+        <!-- ══ PANEL: Results ══ -->
+        <div class="dash-panel" id="panel-results" style="display:none;">
+
+            <div class="panel-header">
+                <i class="fa-solid fa-chart-pie"></i>
+                <h2>Your Insight Report</h2>
+                <div style="margin-left:auto; display:flex; gap:0.75rem;">
+                    <button id="btn-check-again" class="panel-action-btn outline">
+                        <i class="fa-solid fa-rotate-left"></i> Check Again
+                    </button>
+                    <button id="btn-back-dash" class="panel-action-btn primary">
+                        <i class="fa-solid fa-house"></i> Dashboard
                     </button>
                 </div>
-            </section>
+            </div>
 
-            <!-- STEP 2: Symptom Selection -->
-            <section id="step-2" class="wizard-step">
-                <div class="card symptom-card slide-up">
-                    <div class="step-indicator">Step 2 of 3</div>
-                    <h2>How are you feeling today?</h2>
-                    <p class="subtitle">Search and select all the symptoms you are experiencing.</p>
+            <!-- Analysed symptom tags -->
+            <div class="results-symptom-bar" id="results-symptom-bar"></div>
 
-                    <div class="search-wrapper">
-                        <i class="fa-solid fa-search search-icon"></i>
-                        <input type="text" id="symptom-search" placeholder="E.g. Fever, Cough, Nausea..." autocomplete="off">
-                        <div id="autocomplete-list" class="autocomplete-items"></div>
+            <!-- Loading -->
+            <div id="loading-spinner" class="results-loading" style="display:none;">
+                <div class="results-loader"></div>
+                <p>Analysing health data…</p>
+            </div>
+
+            <!-- Result cards -->
+            <div id="results-container" class="results-grid"></div>
+        </div>
+
+        <!-- ══ PANEL: Check History ══ -->
+        <div class="dash-panel" id="panel-history" style="display:none;">
+            <div class="panel-header">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <h2>Check History</h2>
+            </div>
+            <div class="dash-history-list" style="max-height:none;" id="history-list-full">
+                <p class="empty-history">Loading history…</p>
+            </div>
+        </div>
+
+        <!-- ══ PANEL: Profile ══ -->
+        <div class="dash-panel" id="panel-profile" style="display:none;">
+            <div class="panel-header">
+                <i class="fa-regular fa-user"></i>
+                <h2>My Profile</h2>
+            </div>
+            <div class="profile-card">
+                <div class="profile-avatar-lg" id="profile-avatar">?</div>
+                <div class="profile-info">
+                    <div class="profile-field">
+                        <label>Full Name</label>
+                        <p id="profile-name">—</p>
                     </div>
-
-                    <div class="selected-symptoms-container">
-                        <h3>Your Symptoms:</h3>
-                        <div id="selected-symptoms" class="pills-container">
-                            <!-- Pills go here via JS -->
-                            <p class="empty-state">No symptoms selected yet. Search above.</p>
-                        </div>
+                    <div class="profile-field">
+                        <label>Email Address</label>
+                        <p id="profile-email">—</p>
                     </div>
-
-                    <div class="action-buttons">
-                        <button id="btn-analyze" class="btn primary-btn">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Symptoms
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- STEP 3: Results Dashboard -->
-            <section id="step-3" class="wizard-step">
-                <div class="card results-card slide-up">
-                    <div class="step-indicator">Step 3 of 3</div>
-                    <h2>Your Insight Report</h2>
-                    <p class="subtitle">Based on your symptoms, here are the most probable conditions.</p>
-                    
-                    <div id="loading-spinner" class="spinner-container" style="display:none;">
-                        <div class="loader"></div>
-                        <p>Analyzing health data...</p>
-                    </div>
-
-                    <div id="results-container">
-                        <!-- Results injected by JS -->
-                    </div>
-
-                    <div class="action-buttons mt-4">
-                        <button id="btn-restart" class="btn outline-btn">
-                            <i class="fa-solid fa-rotate-left"></i> Check New Symptoms
-                        </button>
+                    <div class="profile-field">
+                        <label>Member Since</label>
+                        <p>Today</p>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
 
-        </main>
-    </div>
+        <!-- ══ PANEL: Settings ══ -->
+        <div class="dash-panel" id="panel-settings" style="display:none;">
+            <div class="panel-header">
+                <i class="fa-solid fa-gear"></i>
+                <h2>Settings</h2>
+            </div>
+            <div class="settings-list">
+                <div class="settings-item">
+                    <div>
+                        <p class="settings-item-title">Dark Mode</p>
+                        <p class="settings-item-sub">Toggle between light and dark interface</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <p class="settings-item-title">Email Notifications</p>
+                        <p class="settings-item-sub">Receive health tips and reminders</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <p class="settings-item-title">Privacy Mode</p>
+                        <p class="settings-item-sub">Anonymize session data in logs</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
 
-    <!-- Script at the bottom -->
-    <script src="app.js"></script>
+        <!-- ══ PANEL: Help ══ -->
+        <div class="dash-panel" id="panel-help" style="display:none;">
+            <div class="panel-header">
+                <i class="fa-regular fa-circle-question"></i>
+                <h2>Help &amp; Support</h2>
+            </div>
+            <div class="help-list">
+                <div class="help-item">
+                    <div class="help-item-icon"><i class="fa-solid fa-book-medical"></i></div>
+                    <div>
+                        <p class="help-item-title">How to use the Symptom Checker</p>
+                        <p class="help-item-sub">Go to "New Symptom Check", type and select your symptoms, then click Analyze to get an AI-powered result.</p>
+                    </div>
+                </div>
+                <div class="help-item">
+                    <div class="help-item-icon"><i class="fa-solid fa-robot"></i></div>
+                    <div>
+                        <p class="help-item-title">About the AI Model</p>
+                        <p class="help-item-sub">Powered by a Random Forest classifier trained on a labelled medical symptom dataset from Kaggle.</p>
+                    </div>
+                </div>
+                <div class="help-item">
+                    <div class="help-item-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div>
+                        <p class="help-item-title">Important Disclaimer</p>
+                        <p class="help-item-sub">This tool is educational only. Always consult a licensed physician for any medical concerns.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ PANEL: Placeholder ══ -->
+        <div class="dash-panel" id="panel-placeholder" style="display:none;">
+            <div class="coming-soon">
+                <i class="fa-solid fa-hammer fa-2x" style="color:var(--primary);margin-bottom:1rem;"></i>
+                <h2 id="placeholder-title">Coming Soon</h2>
+                <p>This feature is under development and will be available soon.</p>
+            </div>
+        </div>
+
+    </div><!-- /.dash-main -->
+</div><!-- /#dashboard-layout -->
+
+<script src="app.js"></script>
 </body>
 </html>

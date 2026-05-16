@@ -1,0 +1,8 @@
+terminal 1
+backend
+
+cd "d:\project 1\backend"
+..\venv\Scripts\python.exe -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+terminal 2
+cd "d:\project 1\frontend"
+..\venv\Scripts\python.exe -m http.server 3000
